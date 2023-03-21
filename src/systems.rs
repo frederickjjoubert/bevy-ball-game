@@ -16,13 +16,15 @@ pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<Pr
 }
 
 pub fn transition_to_game_state(
-    mut commands: Commands,
+    // mut commands: Commands,
     keyboard_input: Res<Input<KeyCode>>,
     app_state: Res<State<AppState>>,
+    mut next_app_state: ResMut<NextState<AppState>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::G) {
         if app_state.0 != AppState::Game {
-            commands.insert_resource(NextState(Some(AppState::Game)));
+            // commands.insert_resource(NextState(Some(AppState::Game)));
+            next_app_state.set(AppState::Game);
             println!("Entered AppState::Game");
         }
     }
