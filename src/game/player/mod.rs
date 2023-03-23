@@ -23,7 +23,7 @@ impl Plugin for PlayerPlugin {
             .configure_set(MovementSystemSet.before(ConfinementSystemSet))
             // On Enter State
             .add_system(spawn_player.in_schedule(OnEnter(AppState::Game)))
-            // Systems
+            // Systems - Before
             // .add_system(
             //     player_movement
             //         .in_set(MovementSystemSet)
@@ -36,6 +36,7 @@ impl Plugin for PlayerPlugin {
             //         .run_if(in_state(AppState::Game))
             //         .run_if(in_state(SimulationState::Running)),
             // )
+            // Systems - After
             .add_systems(
                 (
                     player_movement.in_set(MovementSystemSet),
