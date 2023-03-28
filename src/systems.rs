@@ -3,7 +3,6 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 use crate::events::*;
-use crate::game::SimulationState;
 use crate::AppState;
 
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
