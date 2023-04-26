@@ -4,6 +4,11 @@ use bevy::window::PrimaryWindow;
 
 use crate::events::*;
 
+pub fn lock_screen(mut window_query: Query<&mut Window, With<PrimaryWindow>>) {
+    let mut window = window_query.get_single_mut().unwrap();
+    window.resizable = false;
+}
+
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
     let window = window_query.get_single().unwrap();
 
