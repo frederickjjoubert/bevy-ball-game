@@ -27,17 +27,19 @@ impl Plugin for GamePlugin {
             // States
             .add_state::<SimulationState>()
             // OnEnter Systems
-            .add_system(pause_simulation.in_schedule(OnEnter(AppState::Game)))
+            .add_systems(OnEnter(AppState::Game), pause_simulation)
             // My Plugins
-            .add_plugin(EnemyPlugin)
-            .add_plugin(PlayerPlugin)
-            .add_plugin(ScorePlugin)
-            .add_plugin(StarPlugin)
-            .add_plugin(GameUIPlugin)
+            .add_plugins((
+                EnemyPlugin,
+                PlayerPlugin,
+                ScorePlugin,
+                StarPlugin,
+                GameUIPlugin,
+            ))
             // Systems
-            .add_system(toggle_simulation.run_if(in_state(AppState::Game)))
+            .add_systems(Update, toggle_simulation.run_if(in_state(AppState::Game)))
             // Exit State Systems
-            .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)));
+            .add_systems(OnExit(AppState::Game), resume_simulation);
     }
 }
 

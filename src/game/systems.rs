@@ -16,11 +16,11 @@ pub fn toggle_simulation(
     mut simulation_state_next_state: ResMut<NextState<SimulationState>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        if simulation_state.0 == SimulationState::Running {
+        if simulation_state.get() == &SimulationState::Running {
             simulation_state_next_state.set(SimulationState::Paused);
             println!("Simulation Paused.");
         }
-        if simulation_state.0 == SimulationState::Paused {
+        if simulation_state.get() == &SimulationState::Paused {
             simulation_state_next_state.set(SimulationState::Running);
             println!("Simulation Running.");
         }

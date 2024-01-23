@@ -62,11 +62,11 @@ pub fn update_enemy_direction(
         // let mut direction_changed = false;
 
         let translation = transform.translation;
-        if translation.x < x_min || translation.x > x_max {
+        if translation.x <= x_min || translation.x >= x_max {
             enemy.direction.x *= -1.0;
             // direction_changed = true;
         }
-        if translation.y < y_min || translation.y > y_max {
+        if translation.y <= y_min || translation.y >= y_max {
             enemy.direction.y *= -1.0;
             // direction_changed = true;
         }

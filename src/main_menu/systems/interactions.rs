@@ -14,7 +14,7 @@ pub fn interact_with_play_button(
 ) {
     if let Ok((interaction, mut background_color)) = button_query.get_single_mut() {
         match *interaction {
-            Interaction::Clicked => {
+            Interaction::Pressed => {
                 *background_color = PRESSED_BUTTON_COLOR.into();
                 app_state_next_state.set(AppState::Game);
             }
@@ -37,7 +37,7 @@ pub fn interact_with_quit_button(
 ) {
     if let Ok((interaction, mut background_color)) = button_query.get_single_mut() {
         match *interaction {
-            Interaction::Clicked => {
+            Interaction::Pressed => {
                 *background_color = PRESSED_BUTTON_COLOR.into();
                 app_exit_event_writer.send(AppExit);
             }
