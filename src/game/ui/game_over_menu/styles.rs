@@ -6,29 +6,6 @@ pub const NORMAL_BUTTON: Color = Color::rgb(0.15, 0.15, 0.15);
 pub const HOVERED_BUTTON: Color = Color::rgb(0.25, 0.25, 0.25);
 pub const PRESSED_BUTTON: Color = Color::rgb(0.35, 0.75, 0.35);
 
-// correct way to do it
-// pub const MAIN_MENU_STYLE: Style = {
-//     let mut style = Style::DEFAULT;
-//     style.flex_direction = FlexDirection::Column;
-//     style.justify_content = JustifyContent::Center;
-//     style.align_items = AlignItems::Center;
-//     style.width = Val::Percent(100.0);
-//     style.height = Val::Percent(100.0);
-//     style.margin = UiRect::new(Val::Px(0.0), Val::Px(0.0), Val::Px(0.0), Val::Px(0.0));
-//     style
-// };
-
-// incorrect way
-// pub const PAUSE_MENU_STYLE: Style = Style {
-//     position_type: PositionType::Absolute, // Needed to display separately from HUD.
-//     display: Display::Flex,                // Hidden by Default
-//     justify_content: JustifyContent::Center,
-//     align_items: AlignItems::Center,
-//     height: Val::Percent(100.0),
-//     width: Val::Percent(100.0),
-//     ..Style::DEFAULT
-// };
-
 pub const GAME_OVER_MENU_STYLE: Style = {
     let mut style = Style::DEFAULT;
     style.position_type = PositionType::Absolute; // Needed to display separately from HUD.
