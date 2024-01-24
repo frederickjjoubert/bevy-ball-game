@@ -1,5 +1,7 @@
 pub mod enemy;
-mod player;
+pub mod player;
+mod projectile;
+mod target;
 pub mod score;
 pub mod star;
 mod systems;
@@ -7,6 +9,8 @@ mod ui;
 
 use enemy::EnemyPlugin;
 use player::PlayerPlugin;
+use projectile::ProjectilePlugin;
+use target::TargetPlugin;
 use score::ScorePlugin;
 use star::StarPlugin;
 use systems::*;
@@ -31,6 +35,8 @@ impl Plugin for GamePlugin {
             // My Plugins
             .add_plugins((
                 EnemyPlugin,
+                ProjectilePlugin,
+                TargetPlugin,
                 PlayerPlugin,
                 ScorePlugin,
                 StarPlugin,

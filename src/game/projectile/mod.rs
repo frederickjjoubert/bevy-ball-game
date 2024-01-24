@@ -8,26 +8,24 @@ use crate::AppState;
 
 use bevy::prelude::*;
 
-pub struct PlayerPlugin;
+pub struct ProjectilePlugin;
 
-impl Plugin for PlayerPlugin {
+impl Plugin for ProjectilePlugin {
     fn build(&self, app: &mut App) {
         app
-            // On Enter State
-            .add_systems(OnEnter(AppState::Game), spawn_player)
             // Systems
             .add_systems(
                 Update,
                 (
-                    player_movement,
-                    confine_player_movement,
-                    enemy_hit_player,
-                    player_hit_star,
+                    spawn_projectile,
+                    despawn_projectile,
+                    // projectile_movement,
+                    // projectile_hit_target,
                 )
                     .run_if(in_state(AppState::Game))
                     .run_if(in_state(SimulationState::Running)),
             )
             // On Exit State
-            .add_systems(OnExit(AppState::Game), despawn_player);
+            .add_systems(OnExit(AppState::Game), despawn_projectile);
     }
 }
