@@ -1,25 +1,29 @@
+pub mod components;
+pub mod debri;
 pub mod enemy;
 pub mod player;
 mod projectile;
-mod target;
 pub mod score;
 pub mod star;
 mod systems;
+mod target;
 mod ui;
 
 use enemy::EnemyPlugin;
 use player::PlayerPlugin;
 use projectile::ProjectilePlugin;
-use target::TargetPlugin;
 use score::ScorePlugin;
 use star::StarPlugin;
 use systems::*;
+use target::TargetPlugin;
 use ui::GameUIPlugin;
 
 use bevy::prelude::*;
 
 use crate::events::GameOver;
 use crate::AppState;
+
+use self::debri::DebriPlugin;
 
 pub struct GamePlugin;
 
@@ -34,16 +38,20 @@ impl Plugin for GamePlugin {
             .add_systems(OnEnter(AppState::Game), pause_simulation)
             // My Plugins
             .add_plugins((
-                EnemyPlugin,
+                // EnemyPlugin,
                 ProjectilePlugin,
                 TargetPlugin,
                 PlayerPlugin,
                 ScorePlugin,
-                StarPlugin,
+                DebriPlugin,
+                // StarPlugin,
                 GameUIPlugin,
             ))
             // Systems
-            .add_systems(Update, toggle_simulation.run_if(in_state(AppState::Game)))
+            .add_systems(
+                FixedUpdate,
+                (toggle_simulation, check_collisions).run_if(in_state(AppState::Game)),
+            )
             // Exit State Systems
             .add_systems(OnExit(AppState::Game), resume_simulation);
     }

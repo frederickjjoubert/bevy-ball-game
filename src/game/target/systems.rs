@@ -28,4 +28,3 @@ pub fn despawn_target(mut commands: Commands, target_query: Query<Entity, With<T
         commands.entity(target_entity).despawn();
     }
 }
-

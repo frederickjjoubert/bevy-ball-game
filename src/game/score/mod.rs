@@ -18,8 +18,8 @@ impl Plugin for ScorePlugin {
             // On Enter State
             .add_systems(OnEnter(AppState::Game), insert_score)
             // Systems
-            .add_systems(Update, update_score.run_if(in_state(AppState::Game)))
-            .add_systems(Update, (update_high_scores, high_scores_updated))
+            .add_systems(FixedUpdate, update_score.run_if(in_state(AppState::Game)))
+            .add_systems(FixedUpdate, (update_high_scores, high_scores_updated))
             // On Exit State
             .add_systems(OnExit(AppState::Game), remove_score);
     }
