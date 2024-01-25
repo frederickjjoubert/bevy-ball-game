@@ -1,5 +1,7 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use bevy_spatial::SpatialAccess;
+use rand::prelude::ThreadRng;
+use rand::Rng;
 
 use crate::game::{
     debri::components::{Debri, NNTree},
@@ -16,6 +18,8 @@ pub fn collector_movement(
     time: Res<Time>,
     treeaccess: Res<NNTree>,
 ) {
+    let mut rng = ThreadRng::default(); // Create a new random number generator
+
     for (mut transform, collector) in query.iter_mut() {
         let collector_pos = Vec2::new(transform.translation.x, transform.translation.y);
         let target_pos = if collector.returning {
@@ -29,7 +33,12 @@ pub fn collector_movement(
             collector_pos
         };
 
-        let towards = (target_pos - collector_pos).normalize();
+        let mut towards = (target_pos - collector_pos).normalize();
+
+        // Add randomness to the movement
+        towards.x += rng.gen_range(-0.1..0.1);
+        towards.y += rng.gen_range(-0.1..0.1);
+
         transform.translation.x += towards.x * time.delta_seconds() * collector.velocity;
         transform.translation.y += towards.y * time.delta_seconds() * collector.velocity;
     }
