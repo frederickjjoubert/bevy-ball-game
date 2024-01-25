@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-pub const PROJECTILE_SPAWN_TIME: f32 = 1.0;
+pub const PROJECTILE_SPAWN_TIME: f32 = 0.10;
 
 #[derive(Resource)]
 pub struct ProjectileSpawnTimer {

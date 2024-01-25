@@ -1,12 +1,9 @@
-use bevy::window::PrimaryWindow;
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
-use rand::Rng;
 
-use crate::game::debri::{components::Debri, DEBRI_SIZE};
+use crate::game::components::Position;
+use crate::game::debri::components::SpawnDebri;
 use crate::game::player::components::Player;
 use crate::game::target::components::Target;
-
-use crate::game::components::Collider;
 
 use super::components::Projectile;
 use super::resources::*;
@@ -74,7 +71,6 @@ pub fn spawn_projectile_timer(
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
     if projectile_spawn_timer.timer.finished() {
-        println!("spawn projectile");
         let target_transform = target_query.get_single().unwrap();
         for player_transform in player_query.iter() {
             commands.spawn((
@@ -98,45 +94,32 @@ pub fn spawn_projectile_timer(
 
 pub fn projectile_hit_target(
     mut commands: Commands,
+    mut events_writer: EventWriter<SpawnDebri>,
     mut projectile_query: Query<(Entity, &Transform), With<Projectile>>,
     target_query: Query<&Transform, With<Target>>,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    let mut rng = rand::thread_rng();
-    for (projectile_entity, projectile_transform) in projectile_query.iter_mut() {
+    for (entity, projectile_transform) in projectile_query.iter_mut() {
         if let Ok(target_transform) = target_query.get_single() {
             let distance = projectile_transform
                 .translation
                 .distance(target_transform.translation);
             if distance < 10.0 {
                 // Direction from target to projectile
-                let hit_direction = projectile_transform.translation - target_transform.translation;
+                let direction = projectile_transform.translation - target_transform.translation;
+                let direction = Vec2::new(direction.x, direction.y).normalize();
+                let position = Position {
+                    x: target_transform.translation.x,
+                    y: target_transform.translation.y,
+                };
 
-                // Negate and normalize the direction for debris velocity
-                let debris_velocity = -hit_direction.normalize() * rng.gen_range(100.0..200.0);
+                // Spawn debris
+                events_writer.send(SpawnDebri {
+                    position,
+                    direction,
+                });
 
-                commands.entity(projectile_entity).despawn();
-                commands.spawn((
-                    MaterialMesh2dBundle {
-                        mesh: meshes.add(shape::Circle::new(DEBRI_SIZE).into()).into(),
-                        material: materials.add(ColorMaterial::from(Color::WHITE)),
-                        transform: Transform::from_xyz(
-                            target_transform.translation.x,
-                            target_transform.translation.y,
-                            0.0,
-                        ),
-                        ..default()
-                    },
-                    Debri {
-                        velocity: Vec2::new(debris_velocity.x, debris_velocity.y),
-                        time_alive: 0.0,
-                        start_deceleration: false,
-                    },
-                    Collider {
-                        size: Vec2::new(DEBRI_SIZE, DEBRI_SIZE),
-                    },
-                ));
+                // Despawn projectile
+                commands.entity(entity).despawn();
             }
         }
     }

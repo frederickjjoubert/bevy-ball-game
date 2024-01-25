@@ -60,15 +60,12 @@ pub fn check_collisions(
 
                 // move the collider some pixels away from the other collider
                 if reflect_x {
-                    let x = if collision.unwrap() == Collision::Left {
-                        other_transform.translation.x
-                            - collider.size.x
-                            - other_collider.size.x
-                    } else {
-                        other_transform.translation.x
-                            + collider.size.x
-                            + other_collider.size.x
-                    };
+                    let x = handle_reflection(
+                        collision,
+                        other_transform.translation.x,
+                        collider.size.x,
+                        other_collider.size.x,
+                    );
                     commands.entity(*entity).insert(Transform::from_xyz(
                         x,
                         transform.translation.y,
@@ -77,15 +74,12 @@ pub fn check_collisions(
                 }
 
                 if reflect_y {
-                    let y = if collision.unwrap() == Collision::Bottom {
-                        other_transform.translation.y
-                            - collider.size.y / 2.0
-                            - other_collider.size.y / 2.0
-                    } else {
-                        other_transform.translation.y
-                            + collider.size.y / 2.0
-                            + other_collider.size.y / 2.0
-                    };
+                    let y = handle_reflection(
+                        collision,
+                        other_transform.translation.y,
+                        collider.size.y,
+                        other_collider.size.y,
+                    );
                     commands.entity(*entity).insert(Transform::from_xyz(
                         transform.translation.x,
                         y,
@@ -94,5 +88,18 @@ pub fn check_collisions(
                 }
             }
         }
+    }
+}
+
+fn handle_reflection(
+    collision: Option<Collision>,
+    translation: f32,
+    size: f32,
+    other_size: f32,
+) -> f32 {
+    if collision.unwrap() == Collision::Left || collision.unwrap() == Collision::Bottom {
+        translation - size - other_size / 1.5
+    } else {
+        translation + size + other_size / 1.5
     }
 }

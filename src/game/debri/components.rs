@@ -1,4 +1,7 @@
 use bevy::prelude::*;
+use bevy_spatial::kdtree::KDTree2;
+
+use crate::game::components::{Collider, Position};
 #[derive(Component)]
 
 pub struct Debri {
@@ -7,13 +10,10 @@ pub struct Debri {
     pub start_deceleration: bool,
 }
 
-impl Debri {
-    // Initialize with a velocity and set time_alive to 0
-    pub fn new(velocity: Vec2) -> Self {
-        Debri {
-            velocity,
-            time_alive: 0.0,
-            start_deceleration: false,
-        }
-    }
+pub type NNTree = KDTree2<Collider>;
+
+#[derive(Event)]
+pub struct SpawnDebri {
+    pub direction: Vec2,
+    pub position: Position,
 }

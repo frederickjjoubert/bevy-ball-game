@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 bevy = { version = "0.12" }
 rand = "0.8"
+bevy_spatial = "0.7.0"
