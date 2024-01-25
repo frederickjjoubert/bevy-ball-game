@@ -32,7 +32,6 @@ pub fn build_spawn_toolbar(commands: &mut Commands, asset_server: &Res<AssetServ
             parent
                 .spawn(NodeBundle {
                     style: SPAWN_TOOLBAR_CONTAINER_STYLE,
-                    background_color: BACKGROUND_COLOR.into(),
                     ..default()
                 })
                 .with_children(|parent| {

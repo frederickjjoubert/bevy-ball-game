@@ -21,7 +21,7 @@ impl Plugin for CollectorPlugin {
             // Systems
             .add_systems(
                 FixedUpdate,
-                (collector_movement, spawn_collector)
+                (collector_movement, spawn_collector, check_colision_collector)
                     .run_if(in_state(AppState::Game))
                     .run_if(in_state(SimulationState::Running)),
             )

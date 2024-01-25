@@ -1,7 +1,10 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use bevy_spatial::SpatialAccess;
 
-use crate::game::debri::components::NNTree;
+use crate::game::{
+    debri::components::{Debri, NNTree},
+    score::resources::Score,
+};
 
 use super::{
     components::{Collector, CollectorSpawnEvent},
@@ -9,18 +12,26 @@ use super::{
 };
 
 pub fn collector_movement(
-    mut query: Query<&mut Transform, With<Collector>>,
+    mut query: Query<(&mut Transform, &Collector)>,
     time: Res<Time>,
     treeaccess: Res<NNTree>,
 ) {
-    for mut transform in query.iter_mut() {
+    for (mut transform, collector) in query.iter_mut() {
         let collector_pos = Vec2::new(transform.translation.x, transform.translation.y);
-        // move to
-        if let Some(nearest) = treeaccess.nearest_neighbour(collector_pos) {
-            let towards = nearest.0 - collector_pos;
-            transform.translation.x += towards.x * time.delta_seconds() * 64.0;
-            transform.translation.y += towards.y * time.delta_seconds() * 64.0;
-        }
+        let target_pos = if collector.returning {
+            Vec2::new(
+                collector.stash_pos.translation.x,
+                collector.stash_pos.translation.y,
+            )
+        } else if let Some(nearest) = treeaccess.nearest_neighbour(collector_pos) {
+            nearest.0
+        } else {
+            collector_pos
+        };
+
+        let towards = (target_pos - collector_pos).normalize();
+        transform.translation.x += towards.x * time.delta_seconds() * collector.velocity;
+        transform.translation.y += towards.y * time.delta_seconds() * collector.velocity;
     }
 }
 
@@ -49,8 +60,50 @@ pub fn spawn_collector(
                 ..Default::default()
             },
             Collector {
-                velocity: Vec2::new(500.0, 0.0),
+                velocity: 100.0,
+                stash_pos: event.spawn_pos,
+                returning: false,
+                carrying: None,
             },
         ));
+    }
+}
+
+pub fn check_colision_collector(
+    mut commands: Commands,
+    mut query: Query<(Entity, &Transform, &Collector)>,
+    mut query_debri: Query<(Entity, &Transform), With<Debri>>,
+    mut score: ResMut<Score>,
+) {
+    for (entity, transform, collector) in query.iter_mut() {
+        if collector.returning {
+            let distance = transform
+                .translation
+                .distance(collector.stash_pos.translation);
+            if distance < COLLECTOR_SIZE {
+                commands.entity(entity).insert(Collector {
+                    velocity: collector.velocity,
+                    stash_pos: collector.stash_pos,
+                    returning: false,
+                    carrying: None,
+                });
+
+                score.value += 1;
+            }
+        } else {
+            for (entity_debri, transform_debri) in query_debri.iter_mut() {
+                let distance = transform.translation.distance(transform_debri.translation);
+                if distance < COLLECTOR_SIZE {
+                    commands.entity(entity_debri).despawn();
+
+                    commands.entity(entity).insert(Collector {
+                        velocity: collector.velocity,
+                        stash_pos: collector.stash_pos,
+                        returning: true,
+                        carrying: Some(1.0),
+                    });
+                }
+            }
+        }
     }
 }
