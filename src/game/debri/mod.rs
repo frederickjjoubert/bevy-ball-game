@@ -22,7 +22,7 @@ impl Plugin for DebriPlugin {
             .add_plugins(
                 AutomaticUpdate::<Collider>::new()
                     .with_spatial_ds(SpatialStructure::KDTree2)
-                    .with_frequency(Duration::from_secs(1))
+                    .with_frequency(Duration::from_secs(2))
                     .with_transform(TransformMode::Transform),
             )
             // Events

@@ -3,6 +3,7 @@ mod game;
 mod main_menu;
 mod systems;
 
+use bevy_pancam::PanCamPlugin;
 use game::GamePlugin;
 use main_menu::MainMenuPlugin;
 
@@ -13,7 +14,7 @@ use bevy::prelude::*;
 fn main() {
     App::new()
         // Bevy Plugins
-        .add_plugins(DefaultPlugins)
+        .add_plugins((DefaultPlugins, PanCamPlugin::default()))
         .add_state::<AppState>()
         // My Plugins
         .add_plugins(MainMenuPlugin)

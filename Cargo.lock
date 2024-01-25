@@ -344,6 +344,7 @@ name = "bevy-ball-game"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "bevy_pancam",
  "bevy_spatial",
  "rand",
 ]
@@ -743,6 +744,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ec4962977a746d870170532fc92759e04d3dbcae8b7b82e7ca3bb83b1d75277"
 dependencies = [
  "glam",
+]
+
+[[package]]
+name = "bevy_pancam"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d0fc188c00741b4e7736cf1ba8e394abce7daf479284f5ca551408d36147c7bd"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]

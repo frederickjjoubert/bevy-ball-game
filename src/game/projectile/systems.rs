@@ -8,33 +8,6 @@ use crate::game::target::components::Target;
 use super::components::Projectile;
 use super::resources::*;
 
-// spawn a projectile at the player's position and move it towards the target
-pub fn spawn_projectile(
-    mut commands: Commands,
-    player_query: Query<&Transform, With<Player>>,
-    target_query: Query<&Transform, With<Target>>,
-    asset_server: Res<AssetServer>,
-) {
-    if let Ok(player_transform) = player_query.get_single() {
-        if let Ok(target_transform) = target_query.get_single() {
-            commands.spawn((
-                SpriteBundle {
-                    transform: Transform::from_xyz(
-                        player_transform.translation.x,
-                        player_transform.translation.y,
-                        0.0,
-                    ),
-                    texture: asset_server.load("sprites/projectile.png"),
-                    ..default()
-                },
-                Projectile {
-                    target: target_transform.translation,
-                },
-            ));
-        }
-    }
-}
-
 pub fn projectile_movement(
     mut projectile_query: Query<(&mut Transform, &Projectile)>,
     time: Res<Time>,

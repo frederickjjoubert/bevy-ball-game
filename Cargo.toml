@@ -9,3 +9,4 @@ edition = "2021"
 bevy = { version = "0.12" }
 rand = "0.8"
 bevy_spatial = "0.7.0"
+bevy_pancam = "0.10.0"

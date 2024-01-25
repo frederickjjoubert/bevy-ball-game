@@ -31,13 +31,13 @@ pub fn debri_movement(
         }
 
         if debri.start_deceleration {
-            let deceleration_rate = rng.gen_range(50.0..800.0); // Reduced max range
+            let deceleration_rate = rng.gen_range(200.0..900.0); // Reduced max range
             let velocity_copy = debri.velocity.clone();
             debri.velocity -= velocity_copy.normalize() * deceleration_rate * time.delta_seconds();
         }
 
         // Apply less frequent random direction change
-        if rng.gen_bool(0.1) {
+        if rng.gen_bool(0.05) {
             // 10% chance each frame to change direction
             let angle: f32 = rng.gen_range(-10.0f32..10.0f32).to_radians(); // Reduced angle variation
             let new_velocity = rotate_vector(debri.velocity, angle);
@@ -83,12 +83,11 @@ pub fn spawn_debri(
     mut events: EventReader<SpawnDebri>,
 ) {
     for event in events.read() {
-        println!("spawn debri");
         let mut rng = rand::thread_rng();
         let position = event.position.clone();
         let direction = event.direction;
         // Negate and normalize the direction for debris velocity
-        let velocity = -direction.normalize() * rng.gen_range(100.0..200.0);
+        let velocity = -direction.normalize() * rng.gen_range(200.0..300.0);
 
         commands.spawn((
             MaterialMesh2dBundle {

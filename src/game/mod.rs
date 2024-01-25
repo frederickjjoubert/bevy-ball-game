@@ -37,7 +37,7 @@ impl Plugin for GamePlugin {
             // States
             .add_state::<SimulationState>()
             // OnEnter Systems
-            .add_systems(OnEnter(AppState::Game), pause_simulation)
+            // .add_systems(OnEnter(AppState::Game), pause_simulation)
             // My Plugins
             .add_plugins((
                 // EnemyPlugin,
@@ -52,7 +52,7 @@ impl Plugin for GamePlugin {
             ))
             // Systems
             .add_systems(
-                FixedUpdate,
+                Update,
                 (toggle_simulation).run_if(in_state(AppState::Game)),
             )
             // Exit State Systems
