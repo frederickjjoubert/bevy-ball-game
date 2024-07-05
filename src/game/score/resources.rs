@@ -1,14 +1,8 @@
 use bevy::prelude::*;
 
-#[derive(Resource)]
+#[derive(Resource, Default)]
 pub struct Score {
     pub value: u32,
-}
-
-impl Default for Score {
-    fn default() -> Score {
-        Score { value: 0 }
-    }
 }
 
 #[derive(Resource, Debug)]

@@ -14,10 +14,13 @@ impl Plugin for HudPlugin {
     fn build(&self, app: &mut App) {
         app
             // OnEnter Systems
-            .add_system(spawn_hud.in_schedule(OnEnter(AppState::Game)))
+            .add_systems(OnEnter(AppState::Game), spawn_hud)
             // Systems
-            .add_systems((update_score_text, update_enemy_text).in_set(OnUpdate(AppState::Game)))
+            .add_systems(
+                Update,
+                (update_score_text, update_enemy_text).run_if(in_state(AppState::Game)),
+            )
             // OnExit Systems
-            .add_system(despawn_hud.in_schedule(OnExit(AppState::Game)));
+            .add_systems(OnExit(AppState::Game), despawn_hud);
     }
 }
