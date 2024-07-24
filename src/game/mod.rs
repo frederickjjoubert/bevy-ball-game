@@ -15,7 +15,7 @@ use ui::GameUIPlugin;
 use bevy::prelude::*;
 
 use crate::events::GameOver;
-use crate::AppState;
+use crate::{game_over_event_clear, AppState};
 
 pub struct GamePlugin;
 
@@ -23,7 +23,11 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app
             // Events
-            .add_event::<GameOver>()
+            // Need to do manual event cleanup due to run conditions
+            // If event is cleared before game over menu text is updated the final score will not be diplayed.
+            // To fix it the game over event will be available until GameOver state exits
+            //.add_event::<GameOver>()
+            .init_resource::<Events<GameOver>>()
             // States
             .add_state::<SimulationState>()
             // OnEnter Systems
@@ -37,7 +41,9 @@ impl Plugin for GamePlugin {
             // Systems
             .add_system(toggle_simulation.run_if(in_state(AppState::Game)))
             // Exit State Systems
-            .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)));
+            .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)))
+            // Clear game over envents  on GameOver state exit
+            .add_system(game_over_event_clear.in_schedule(OnExit(AppState::GameOver)));
     }
 }
 

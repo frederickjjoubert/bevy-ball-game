@@ -59,3 +59,9 @@ pub fn exit_game(
         app_exit_event_writer.send(AppExit);
     }
 }
+
+pub fn game_over_event_clear(
+    mut events: ResMut<Events<GameOver>>,
+) {
+    events.clear();
+}
