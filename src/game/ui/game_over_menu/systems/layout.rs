@@ -32,7 +32,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                                 "Game Over",
                                 get_title_text_style(&asset_server),
                             )],
-                            alignment: TextAlignment::Center,
+                            justify: JustifyText::Center,
                             ..default()
                         },
                         ..default()
@@ -45,7 +45,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                                     "Your final score was:",
                                     get_final_score_text_style(&asset_server),
                                 )],
-                                alignment: TextAlignment::Center,
+                                justify: JustifyText::Center,
                                 ..default()
                             },
                             ..default()
@@ -70,7 +70,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                                         "Restart",
                                         get_button_text_style(&asset_server),
                                     )],
-                                    alignment: TextAlignment::Center,
+                                    justify: JustifyText::Center,
                                     ..default()
                                 },
                                 ..default()
@@ -94,7 +94,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                                         "Main Menu",
                                         get_button_text_style(&asset_server),
                                     )],
-                                    alignment: TextAlignment::Center,
+                                    justify: JustifyText::Center,
                                     ..default()
                                 },
                                 ..default()
@@ -118,7 +118,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                                         "Quit",
                                         get_button_text_style(&asset_server),
                                     )],
-                                    alignment: TextAlignment::Center,
+                                    justify: JustifyText::Center,
                                     ..default()
                                 },
                                 ..default()

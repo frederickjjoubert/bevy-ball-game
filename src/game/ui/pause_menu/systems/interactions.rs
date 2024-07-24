@@ -15,7 +15,7 @@ pub fn interact_with_resume_button(
 ) {
     for (interaction, mut color) in button_query.iter_mut() {
         match *interaction {
-            Interaction::Clicked => {
+            Interaction::Pressed => {
                 *color = PRESSED_BUTTON.into();
                 simulation_state_next_state.set(SimulationState::Running);
             }
@@ -38,7 +38,7 @@ pub fn interact_with_main_menu_button(
 ) {
     for (interaction, mut color) in button_query.iter_mut() {
         match *interaction {
-            Interaction::Clicked => {
+            Interaction::Pressed => {
                 *color = PRESSED_BUTTON.into();
                 app_state_next_state.set(AppState::MainMenu);
             }
@@ -61,9 +61,9 @@ pub fn interact_with_quit_button(
 ) {
     for (interaction, mut color) in button_query.iter_mut() {
         match *interaction {
-            Interaction::Clicked => {
+            Interaction::Pressed => {
                 *color = PRESSED_BUTTON.into();
-                app_exit_event_writer.send(AppExit);
+                app_exit_event_writer.send(AppExit::Success);
             }
             Interaction::Hovered => {
                 *color = HOVERED_BUTTON.into();
