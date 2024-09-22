@@ -20,8 +20,6 @@ Run the project with `cargo run`
 
 # Assets 
 
-👀
-
 We're going to be using assets from the [kenney.nl](kenney.nl) website today for our project.
 - Kenney provides amazing assets free to use with a public domain license.
 - If you use their assets often, I highly recommend becoming a [Patreon](https://www.patreon.com/bePatron?u=102131) or [donating](https://kenney.itch.io/kenney-donation).
