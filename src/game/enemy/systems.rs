@@ -83,10 +83,13 @@ pub fn update_enemy_direction(
         //         sound_effect_2
         //     };
 
-        //     commands.spawn(AudioBundle {
-        //         source: sound_effect,
-        //         settings: PlaybackSettings::DESPAWN,
-        //     });
+        //      commands.spawn(AudioBundle {
+        //          source: sound_effect,
+        //          settings: PlaybackSettings {
+        //              volume: Volume::new(0.05),
+        //              ..PlaybackSettings::DESPAWN
+        //          },
+        //      });
         // }
     }
 }
