@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
-use rand::prelude::*;
+use rand::random;
 
 use super::components::Star;
 use super::resources::*;
@@ -18,11 +18,8 @@ pub fn spawn_stars(
         let random_y = random::<f32>() * window.height();
 
         commands.spawn((
-            SpriteBundle {
-                transform: Transform::from_xyz(random_x, random_y, 0.0),
-                texture: asset_server.load("sprites/star.png"),
-                ..default()
-            },
+            Transform::from_xyz(random_x, random_y, 0.0),
+            Sprite::from_image(asset_server.load("sprites/star.png")),
             Star {},
         ));
     }
@@ -50,11 +47,8 @@ pub fn spawn_stars_over_time(
         let random_y = random::<f32>() * window.height();
 
         commands.spawn((
-            SpriteBundle {
-                transform: Transform::from_xyz(random_x, random_y, 0.0),
-                texture: asset_server.load("sprites/star.png"),
-                ..default()
-            },
+            Transform::from_xyz(random_x, random_y, 0.0),
+            Sprite::from_image(asset_server.load("sprites/star.png")),
             Star {},
         ));
     }

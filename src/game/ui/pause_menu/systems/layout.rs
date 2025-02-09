@@ -23,104 +23,68 @@ pub fn despawn_pause_menu(
 pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
     let pause_menu_entity = commands
         .spawn((
-            NodeBundle {
-                style: PAUSE_MENU_STYLE,
-                z_index: ZIndex::Local(1), // See Ref. 1
-                ..default()
-            },
+            Visibility::default(),
+            PAUSE_MENU_NODE.clone(),
+            ZIndex(1), // See Ref. 1
             PauseMenu {},
         ))
         .with_children(|parent| {
             parent
-                .spawn(NodeBundle {
-                    style: PAUSE_MENU_CONTAINER_STYLE,
-                    background_color: BACKGROUND_COLOR.into(),
-                    ..default()
-                })
+                .spawn((
+                    PAUSE_MENU_CONTAINER_NODE.clone(),
+                    BackgroundColor(BACKGROUND_COLOR),
+                ))
                 .with_children(|parent| {
                     // Title
-                    parent.spawn(TextBundle {
-                        text: Text {
-                            sections: vec![TextSection::new(
-                                "Pause Menu",
-                                get_title_text_style(&asset_server),
-                            )],
-                            justify: JustifyText::Center,
-                            ..default()
-                        },
-                        ..default()
-                    });
+                    parent.spawn((
+                        Text("Pause Menu".to_string()),
+                        get_title_text_style(asset_server),
+                        TextLayout::new_with_justify(JustifyText::Center),
+                    ));
                     // Resume Button
                     parent
                         .spawn((
-                            ButtonBundle {
-                                style: BUTTON_STYLE,
-                                background_color: NORMAL_BUTTON.into(),
-                                ..default()
-                            },
+                            Button,
+                            BUTTON_NODE.clone(),
+                            BackgroundColor(NORMAL_BUTTON),
                             ResumeButton {},
                         ))
                         .with_children(|parent| {
-                            parent.spawn(TextBundle {
-                                style: Style { ..default() },
-                                text: Text {
-                                    sections: vec![TextSection::new(
-                                        "Resume",
-                                        get_button_text_style(&asset_server),
-                                    )],
-                                    justify: JustifyText::Center,
-                                    ..default()
-                                },
-                                ..default()
-                            });
+                            parent.spawn((
+                                Text("Resume".to_string()),
+                                get_button_text_style(asset_server),
+                                TextLayout::new_with_justify(JustifyText::Center),
+                            ));
                         });
                     // Main Menu Button
                     parent
                         .spawn((
-                            ButtonBundle {
-                                style: BUTTON_STYLE,
-                                background_color: NORMAL_BUTTON.into(),
-                                ..default()
-                            },
+                            Button,
+                            BUTTON_NODE.clone(),
+                            BackgroundColor(NORMAL_BUTTON),
                             MainMenuButton {},
                         ))
                         .with_children(|parent| {
-                            parent.spawn(TextBundle {
-                                style: Style { ..default() },
-                                text: Text {
-                                    sections: vec![TextSection::new(
-                                        "Main Menu",
-                                        get_button_text_style(&asset_server),
-                                    )],
-                                    justify: JustifyText::Center,
-                                    ..default()
-                                },
-                                ..default()
-                            });
+                            parent.spawn((
+                                Text("Main Menu".to_string()),
+                                get_button_text_style(asset_server),
+                                TextLayout::new_with_justify(JustifyText::Center),
+                            ));
                         });
                     // Quit Button
                     parent
                         .spawn((
-                            ButtonBundle {
-                                style: BUTTON_STYLE,
-                                background_color: NORMAL_BUTTON.into(),
-                                ..default()
-                            },
+                            Button,
+                            BUTTON_NODE.clone(),
+                            BackgroundColor(NORMAL_BUTTON),
                             QuitButton {},
                         ))
                         .with_children(|parent| {
-                            parent.spawn(TextBundle {
-                                style: Style { ..default() },
-                                text: Text {
-                                    sections: vec![TextSection::new(
-                                        "Quit",
-                                        get_button_text_style(&asset_server),
-                                    )],
-                                    justify: JustifyText::Center,
-                                    ..default()
-                                },
-                                ..default()
-                            });
+                            parent.spawn((
+                                Text("Quit".to_string()),
+                                get_button_text_style(asset_server),
+                                TextLayout::new_with_justify(JustifyText::Center),
+                            ));
                         });
                 });
         })

@@ -15,91 +15,56 @@ pub fn despawn_main_menu(mut commands: Commands, main_menu_query: Query<Entity, 
 
 pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
     let main_menu_entity = commands
-        .spawn((
-            NodeBundle {
-                style: MAIN_MENU_STYLE,
-                ..default()
-            },
-            MainMenu {},
-        ))
+        .spawn((Visibility::default(), MAIN_MENU_NODE.clone(), MainMenu {}))
         .with_children(|parent| {
             // === Title ===
-            parent
-                .spawn(NodeBundle {
-                    style: TITLE_STYLE,
-                    ..default()
-                })
-                .with_children(|parent| {
-                    // Image 1
-                    parent.spawn(ImageBundle {
-                        style: IMAGE_STYLE,
-                        image: asset_server.load("sprites/ball_blue_large.png").into(),
-                        ..default()
-                    });
-                    // Text
-                    parent.spawn(TextBundle {
-                        text: Text {
-                            sections: vec![TextSection::new(
-                                "Bevy Ball Game",
-                                get_title_text_style(&asset_server),
-                            )],
-                            justify: JustifyText::Center,
-                            ..default()
-                        },
-                        ..default()
-                    });
-                    // Image 2
-                    parent.spawn(ImageBundle {
-                        style: IMAGE_STYLE,
-                        image: asset_server.load("sprites/ball_red_large.png").into(),
-                        ..default()
-                    });
-                });
+            parent.spawn(TITLE_NODE.clone()).with_children(|parent| {
+                // Image 1
+                parent.spawn((
+                    IMAGE_NODE.clone(),
+                    ImageNode::new(asset_server.load("sprites/ball_blue_large.png")),
+                ));
+                // Text
+                parent.spawn((
+                    Text("Ball & Stars".to_string()),
+                    get_title_text_style(asset_server),
+                    TextLayout::new_with_justify(JustifyText::Center),
+                ));
+                // Image 2
+                parent.spawn((
+                    IMAGE_NODE.clone(),
+                    ImageNode::new(asset_server.load("sprites/ball_red_large.png")),
+                ));
+            });
             // === Play Button ===
             parent
                 .spawn((
-                    ButtonBundle {
-                        style: BUTTON_STYLE,
-                        background_color: NORMAL_BUTTON_COLOR.into(),
-                        ..default()
-                    },
+                    Button,
+                    BUTTON_NODE.clone(),
+                    BackgroundColor(NORMAL_BUTTON_COLOR),
                     PlayButton {},
                 ))
                 .with_children(|parent| {
-                    parent.spawn(TextBundle {
-                        text: Text {
-                            sections: vec![TextSection::new(
-                                "Play",
-                                get_button_text_style(&asset_server),
-                            )],
-                            justify: JustifyText::Center,
-                            ..default()
-                        },
-                        ..default()
-                    });
+                    parent.spawn((
+                        Text("Play".to_string()),
+                        get_button_text_style(asset_server),
+                        TextLayout::new_with_justify(JustifyText::Center),
+                    ));
                 });
             // === Quit Button ===
             parent
                 .spawn((
-                    ButtonBundle {
-                        style: BUTTON_STYLE,
-                        background_color: NORMAL_BUTTON_COLOR.into(),
-                        ..default()
-                    },
+                    Button,
+                    BUTTON_NODE.clone(),
+                    BackgroundColor(NORMAL_BUTTON_COLOR),
                     QuitButton {},
                 ))
                 .with_children(|parent| {
-                    parent.spawn(TextBundle {
-                        text: Text {
-                            sections: vec![TextSection::new(
-                                "Quit",
-                                get_button_text_style(&asset_server),
-                            )],
-                            justify: JustifyText::Center,
-                            ..default()
-                        },
-                        ..default()
-                    });
+                    parent.spawn((
+                        Text("Quit".to_string()),
+                        get_button_text_style(asset_server),
+                        TextLayout::new_with_justify(JustifyText::Center),
+                    ));
                 });
         })
         .id();

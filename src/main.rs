@@ -1,3 +1,6 @@
+// Disable console on Windows for non-dev builds.
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 pub mod events;
 mod game;
 mod main_menu;

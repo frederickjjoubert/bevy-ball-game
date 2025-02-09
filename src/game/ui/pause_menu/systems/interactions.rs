@@ -6,6 +6,7 @@ use crate::game::ui::pause_menu::styles::*;
 use crate::game::SimulationState;
 use crate::AppState;
 
+#[allow(clippy::type_complexity)]
 pub fn interact_with_resume_button(
     mut button_query: Query<
         (&Interaction, &mut BackgroundColor),
@@ -29,6 +30,7 @@ pub fn interact_with_resume_button(
     }
 }
 
+#[allow(clippy::type_complexity)]
 pub fn interact_with_main_menu_button(
     mut button_query: Query<
         (&Interaction, &mut BackgroundColor),
@@ -52,6 +54,7 @@ pub fn interact_with_main_menu_button(
     }
 }
 
+#[allow(clippy::type_complexity)]
 pub fn interact_with_quit_button(
     mut app_exit_event_writer: EventWriter<AppExit>,
     mut button_query: Query<

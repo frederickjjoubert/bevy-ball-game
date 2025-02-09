@@ -19,27 +19,17 @@ pub struct EnemyPlugin;
 
 impl Plugin for EnemyPlugin {
     fn build(&self, app: &mut App) {
-        app
-            // Resources
-            .init_resource::<EnemySpawnTimer>()
-            // Startup Systems
-            // .add_startup_system(spawn_enemies)
-            // Enter State Systems
+        app.init_resource::<EnemySpawnTimer>()
             .add_systems(OnEnter(AppState::Game), spawn_enemies)
-            // Systems
             .add_systems(
                 Update,
                 (
                     enemy_movement,
-                    update_enemy_direction,
                     confine_enemy_movement,
-                    tick_enemy_spawn_timer,
                     spawn_enemies_over_time,
                 )
-                    .run_if(in_state(AppState::Game))
-                    .run_if(in_state(SimulationState::Running)),
+                    .run_if(in_state(AppState::Game).and(in_state(SimulationState::Running))),
             )
-            // Exit State Systems
             .add_systems(OnExit(AppState::Game), despawn_enemies);
     }
 }
