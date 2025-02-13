@@ -15,7 +15,7 @@ use ui::GameUIPlugin;
 use bevy::prelude::*;
 
 use crate::events::GameOver;
-use crate::AppState;
+use crate::{game_over_event_clear, AppState};
 
 pub struct GamePlugin;
 
@@ -23,7 +23,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app
             // Events
-            .add_event::<GameOver>()
+            .init_resource::<Events<GameOver>>()
             // States
             .init_state::<SimulationState>()
             // OnEnter Systems
@@ -39,7 +39,9 @@ impl Plugin for GamePlugin {
             // Systems
             .add_systems(Update, toggle_simulation.run_if(in_state(AppState::Game)))
             // Exit State Systems
-            .add_systems(OnExit(AppState::Game), resume_simulation);
+            .add_systems(OnExit(AppState::Game), resume_simulation)
+            // Clear game over envents  on GameOver state exit
+            .add_systems(OnExit(AppState::GameOver), game_over_event_clear);
     }
 }
 

@@ -9,75 +9,41 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 pub fn build_hud(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
     let hud_entity = commands
-        .spawn((
-            NodeBundle {
-                style: HUD_STYLE,
-                ..default()
-            },
-            HUD {},
-        ))
+        .spawn((Visibility::default(), HUD_NODE.clone(), HUD {}))
         .with_children(|parent| {
             // LHS
             parent
-                .spawn(NodeBundle {
-                    style: LHS_STYLE,
-                    background_color: BACKGROUND_COLOR.into(),
-                    ..default()
-                })
+                .spawn((LHS_NODE.clone(), BackgroundColor(BACKGROUND_COLOR)))
                 .with_children(|parent| {
                     // Star Image
-                    parent.spawn(ImageBundle {
-                        style: IMAGE_STYLE,
-                        image: asset_server.load("sprites/star.png").into(),
-                        ..default()
-                    });
+                    parent.spawn((
+                        ImageNode::new(asset_server.load("sprites/star.png")),
+                        IMAGE_NODE.clone(),
+                    ));
                     // Score Text
                     parent.spawn((
-                        TextBundle {
-                            style: Style { ..default() },
-                            text: Text {
-                                sections: vec![TextSection::new(
-                                    "0",
-                                    get_text_style(&asset_server),
-                                )],
-                                justify: JustifyText::Center,
-                                ..default()
-                            },
-                            ..default()
-                        },
+                        Text("0".to_string()),
+                        get_text_style(asset_server),
+                        TextLayout::new_with_justify(JustifyText::Center),
                         ScoreText {},
                     ));
                 });
             // RHS
             parent
-                .spawn(NodeBundle {
-                    style: RHS_STYLE,
-                    background_color: BACKGROUND_COLOR.into(),
-                    ..default()
-                })
+                .spawn((RHS_NODE.clone(), BackgroundColor(BACKGROUND_COLOR)))
                 .with_children(|parent| {
                     // Enemy Text
                     parent.spawn((
-                        TextBundle {
-                            style: Style { ..default() },
-                            text: Text {
-                                sections: vec![TextSection::new(
-                                    "0",
-                                    get_text_style(&asset_server),
-                                )],
-                                justify: JustifyText::Center,
-                                ..default()
-                            },
-                            ..default()
-                        },
+                        Text("0".to_string()),
+                        get_text_style(asset_server),
+                        TextLayout::new_with_justify(JustifyText::Center),
                         EnemyText {},
                     ));
                     // Enemy Image
-                    parent.spawn(ImageBundle {
-                        style: IMAGE_STYLE,
-                        image: asset_server.load("sprites/ball_red_large.png").into(),
-                        ..default()
-                    });
+                    parent.spawn((
+                        ImageNode::new(asset_server.load("sprites/ball_red_large.png")),
+                        IMAGE_NODE.clone(),
+                    ));
                 });
         })
         .id();
