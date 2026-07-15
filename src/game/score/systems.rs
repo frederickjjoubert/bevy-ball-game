@@ -18,7 +18,7 @@ pub fn update_score(score: Res<Score>) {
 }
 
 pub fn update_high_scores(
-    mut game_over_event_reader: EventReader<GameOver>,
+    mut game_over_event_reader: MessageReader<GameOver>,
     mut high_scores: ResMut<HighScores>,
 ) {
     for event in game_over_event_reader.read() {

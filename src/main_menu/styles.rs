@@ -41,14 +41,14 @@ pub static TITLE_NODE: std::sync::LazyLock<Node> = std::sync::LazyLock::new(|| N
 
 pub fn get_title_text_style(asset_server: &Res<AssetServer>) -> (TextFont, TextColor) {
     (
-        TextFont::from_font(asset_server.load("fonts/FiraSans-Bold.ttf")).with_font_size(50.0),
+        TextFont::from(asset_server.load("fonts/FiraSans-Bold.ttf")).with_font_size(50.0),
         TextColor(Color::WHITE),
     )
 }
 
 pub fn get_button_text_style(asset_server: &Res<AssetServer>) -> (TextFont, TextColor) {
     (
-        TextFont::from_font(asset_server.load("fonts/FiraSans-Bold.ttf")).with_font_size(32.0),
+        TextFont::from(asset_server.load("fonts/FiraSans-Bold.ttf")).with_font_size(32.0),
         TextColor(Color::WHITE),
     )
 }

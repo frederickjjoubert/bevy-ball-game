@@ -22,8 +22,8 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app
-            // Events
-            .init_resource::<Events<GameOver>>()
+            // Messages
+            .init_resource::<Messages<GameOver>>()
             // States
             .init_state::<SimulationState>()
             // OnEnter Systems

@@ -1,10 +1,10 @@
 [package]
 name = "bevy-ball-game"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = "0.15"
-rand = "0.9"
+bevy = "0.19.0"
+rand = "0.10.2"

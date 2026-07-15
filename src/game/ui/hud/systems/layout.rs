@@ -24,7 +24,7 @@ pub fn build_hud(commands: &mut Commands, asset_server: &Res<AssetServer>) -> En
                     parent.spawn((
                         Text("0".to_string()),
                         get_text_style(asset_server),
-                        TextLayout::new_with_justify(JustifyText::Center),
+                        TextLayout::justify(Justify::Center),
                         ScoreText {},
                     ));
                 });
@@ -36,7 +36,7 @@ pub fn build_hud(commands: &mut Commands, asset_server: &Res<AssetServer>) -> En
                     parent.spawn((
                         Text("0".to_string()),
                         get_text_style(asset_server),
-                        TextLayout::new_with_justify(JustifyText::Center),
+                        TextLayout::justify(Justify::Center),
                         EnemyText {},
                     ));
                     // Enemy Image
@@ -53,6 +53,6 @@ pub fn build_hud(commands: &mut Commands, asset_server: &Res<AssetServer>) -> En
 
 pub fn despawn_hud(mut commands: Commands, hud_query: Query<Entity, With<HUD>>) {
     for entity in hud_query.iter() {
-        commands.entity(entity).despawn_recursive();
+        commands.entity(entity).despawn();
     }
 }
