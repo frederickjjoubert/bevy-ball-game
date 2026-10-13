@@ -14,8 +14,8 @@ pub fn despawn_pause_menu(
     mut commands: Commands,
     pause_menu_query: Query<Entity, With<PauseMenu>>,
 ) {
-    if let Ok(pause_menu_entity) = pause_menu_query.get_single() {
-        commands.entity(pause_menu_entity).despawn_recursive();
+    if let Ok(pause_menu_entity) = pause_menu_query.single() {
+        commands.entity(pause_menu_entity).despawn();
     }
 }
 
@@ -39,7 +39,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                     parent.spawn((
                         Text("Pause Menu".to_string()),
                         get_title_text_style(asset_server),
-                        TextLayout::new_with_justify(JustifyText::Center),
+                        TextLayout::justify(Justify::Center),
                     ));
                     // Resume Button
                     parent
@@ -53,7 +53,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                             parent.spawn((
                                 Text("Resume".to_string()),
                                 get_button_text_style(asset_server),
-                                TextLayout::new_with_justify(JustifyText::Center),
+                                TextLayout::justify(Justify::Center),
                             ));
                         });
                     // Main Menu Button
@@ -68,7 +68,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                             parent.spawn((
                                 Text("Main Menu".to_string()),
                                 get_button_text_style(asset_server),
-                                TextLayout::new_with_justify(JustifyText::Center),
+                                TextLayout::justify(Justify::Center),
                             ));
                         });
                     // Quit Button
@@ -83,7 +83,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                             parent.spawn((
                                 Text("Quit".to_string()),
                                 get_button_text_style(asset_server),
-                                TextLayout::new_with_justify(JustifyText::Center),
+                                TextLayout::justify(Justify::Center),
                             ));
                         });
                 });

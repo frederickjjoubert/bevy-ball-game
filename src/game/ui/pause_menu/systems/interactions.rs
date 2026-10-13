@@ -56,7 +56,7 @@ pub fn interact_with_main_menu_button(
 
 #[allow(clippy::type_complexity)]
 pub fn interact_with_quit_button(
-    mut app_exit_event_writer: EventWriter<AppExit>,
+    mut app_exit_event_writer: MessageWriter<AppExit>,
     mut button_query: Query<
         (&Interaction, &mut BackgroundColor),
         (Changed<Interaction>, With<QuitButton>),
@@ -66,7 +66,7 @@ pub fn interact_with_quit_button(
         match *interaction {
             Interaction::Pressed => {
                 *color = PRESSED_BUTTON.into();
-                app_exit_event_writer.send(AppExit::Success);
+                app_exit_event_writer.write(AppExit::Success);
             }
             Interaction::Hovered => {
                 *color = HOVERED_BUTTON.into();

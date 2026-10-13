@@ -11,7 +11,7 @@ pub fn spawn_enemies(
     window_query: Query<&Window, With<PrimaryWindow>>,
     asset_server: Res<AssetServer>,
 ) {
-    let window = window_query.get_single().unwrap();
+    let window = window_query.single().unwrap();
 
     for _ in 0..NUMBER_OF_ENEMIES {
         let random_x = random::<f32>() * window.width();
@@ -44,7 +44,7 @@ pub fn confine_enemy_movement(
     window_query: Query<&Window, With<PrimaryWindow>>,
     asset_server: Res<AssetServer>,
 ) {
-    let window = window_query.get_single().unwrap();
+    let window = window_query.single().unwrap();
 
     let half_enemy_size = ENEMY_SIZE / 2.0;
     let x_min = 0.0 + half_enemy_size;
@@ -100,8 +100,8 @@ pub fn spawn_enemies_over_time(
 ) {
     enemy_spawn_timer.timer.tick(time.delta());
 
-    if enemy_spawn_timer.timer.finished() {
-        let window = window_query.get_single().unwrap();
+    if enemy_spawn_timer.timer.is_finished() {
+        let window = window_query.single().unwrap();
 
         let random_x = random::<f32>() * window.width();
         let random_y = random::<f32>() * window.height();

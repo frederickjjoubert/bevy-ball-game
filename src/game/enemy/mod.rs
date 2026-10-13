@@ -28,7 +28,7 @@ impl Plugin for EnemyPlugin {
                     confine_enemy_movement,
                     spawn_enemies_over_time,
                 )
-                    .run_if(in_state(AppState::Game).and(in_state(SimulationState::Running))),
+                    .run_if(in_state(AppState::Game).and_then(in_state(SimulationState::Running))),
             )
             .add_systems(OnExit(AppState::Game), despawn_enemies);
     }

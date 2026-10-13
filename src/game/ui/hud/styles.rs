@@ -43,7 +43,7 @@ pub static IMAGE_NODE: std::sync::LazyLock<Node> = std::sync::LazyLock::new(|| N
 
 pub fn get_text_style(asset_server: &Res<AssetServer>) -> (TextFont, TextColor) {
     (
-        TextFont::from_font(asset_server.load("fonts/FiraSans-Bold.ttf")).with_font_size(64.0),
+        TextFont::from(asset_server.load("fonts/FiraSans-Bold.ttf")).with_font_size(64.0),
         TextColor(Color::WHITE),
     )
 }

@@ -19,12 +19,12 @@ impl Plugin for PlayerPlugin {
             .add_systems(
                 Update,
                 (player_movement, confine_player_movement)
-                    .run_if(in_state(AppState::Game).and(in_state(SimulationState::Running))),
+                    .run_if(in_state(AppState::Game).and_then(in_state(SimulationState::Running))),
             )
             .add_systems(
                 Update,
                 (enemy_hit_player, player_hit_star)
-                    .run_if(in_state(AppState::Game).and(in_state(SimulationState::Running))),
+                    .run_if(in_state(AppState::Game).and_then(in_state(SimulationState::Running))),
             )
             // On Exit State
             .add_systems(OnExit(AppState::Game), despawn_player);

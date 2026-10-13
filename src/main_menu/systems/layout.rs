@@ -8,8 +8,8 @@ pub fn spawn_main_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 pub fn despawn_main_menu(mut commands: Commands, main_menu_query: Query<Entity, With<MainMenu>>) {
-    if let Ok(main_menu_entity) = main_menu_query.get_single() {
-        commands.entity(main_menu_entity).despawn_recursive();
+    if let Ok(main_menu_entity) = main_menu_query.single() {
+        commands.entity(main_menu_entity).despawn();
     }
 }
 
@@ -28,7 +28,7 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                 parent.spawn((
                     Text("Ball & Stars".to_string()),
                     get_title_text_style(asset_server),
-                    TextLayout::new_with_justify(JustifyText::Center),
+                    TextLayout::justify(Justify::Center),
                 ));
                 // Image 2
                 parent.spawn((
@@ -48,7 +48,7 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                     parent.spawn((
                         Text("Play".to_string()),
                         get_button_text_style(asset_server),
-                        TextLayout::new_with_justify(JustifyText::Center),
+                        TextLayout::justify(Justify::Center),
                     ));
                 });
             // === Quit Button ===
@@ -63,7 +63,7 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                     parent.spawn((
                         Text("Quit".to_string()),
                         get_button_text_style(asset_server),
-                        TextLayout::new_with_justify(JustifyText::Center),
+                        TextLayout::justify(Justify::Center),
                     ));
                 });
         })
