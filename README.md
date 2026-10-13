@@ -1,5 +1,9 @@
 # Bevy Ball Game
 
+**Play it in your browser or download it for Windows, macOS and Linux on itch.io: https://jacquesj.itch.io/bevy-ball-game**
+
+Every push to `main` builds the web and desktop versions and publishes them to itch.io via [GitHub Actions](.github/workflows/release.yml).
+
 This project is the companion code to my YouTube video series on learning the basics of the [Bevy Game Engine](https://bevyengine.org), version 0.10.
 
 This project starts in [Learn Bevy 0.10 - EP2 - First Game Setup + Bundles and Resources - Bevy Tutorial](https://youtu.be/izhFutJiZgo)
