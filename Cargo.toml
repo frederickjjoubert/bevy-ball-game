@@ -8,3 +8,15 @@ edition = "2024"
 [dependencies]
 bevy = "0.20.0"
 rand = "0.10.3"
+
+# The browser build needs getrandom's JavaScript backend (used by `rand`).
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.4", features = ["wasm_js"] }
+
+# Smaller, slower-to-compile build for the web release.
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+strip = true

@@ -1,0 +1,157 @@
+name: Release to itch.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never let two releases push to itch.io at the same time.
+concurrency:
+  group: release-itch
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  BINARY: bevy-ball-game
+  APP_NAME: Bevy Ball Game
+  ITCH_TARGET: jacquesj/bevy-ball-game
+  # Must match the `wasm-bindgen` version in Cargo.lock.
+  WASM_BINDGEN_VERSION: 0.2.129
+
+jobs:
+  web:
+    name: Build web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen@${{ env.WASM_BINDGEN_VERSION }}
+      - name: Build
+        run: cargo build --profile wasm-release --target wasm32-unknown-unknown
+      - name: Package
+        run: |
+          mkdir -p dist/web
+          wasm-bindgen --no-typescript --target web \
+            --out-dir dist/web --out-name "$BINARY" \
+            "target/wasm32-unknown-unknown/wasm-release/$BINARY.wasm"
+          cp web/index.html dist/web/
+          cp -r assets dist/web/assets
+          tar -C dist -czf web.tar.gz web
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: web.tar.gz
+
+  linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Bevy system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            g++ pkg-config libx11-dev libasound2-dev libudev-dev \
+            libxkbcommon-x11-0 libwayland-dev libxkbcommon-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --release
+      - name: Package
+        run: |
+          mkdir -p dist/linux
+          cp "target/release/$BINARY" dist/linux/
+          cp -r assets dist/linux/assets
+          tar -C dist -czf linux.tar.gz linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: linux.tar.gz
+
+  windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --release
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p dist/windows
+          cp "target/release/$BINARY.exe" dist/windows/
+          cp -r assets dist/windows/assets
+          tar -C dist -czf windows.tar.gz windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: windows.tar.gz
+
+  macos:
+    name: Build macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - name: Build (Apple Silicon and Intel)
+        run: |
+          cargo build --release --target aarch64-apple-darwin
+          cargo build --release --target x86_64-apple-darwin
+      - name: Package universal .app bundle
+        run: |
+          APP="dist/macos/$APP_NAME.app"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          lipo -create -output "$APP/Contents/MacOS/$BINARY" \
+            "target/aarch64-apple-darwin/release/$BINARY" \
+            "target/x86_64-apple-darwin/release/$BINARY"
+          cp -r assets "$APP/Contents/MacOS/assets"
+          cp build/macos/Info.plist "$APP/Contents/Info.plist"
+          # Ad-hoc signature so the bundle launches on Apple Silicon. Not notarized:
+          # users must right-click > Open the first time.
+          codesign --force --deep --sign - "$APP"
+          tar -C dist -czf macos.tar.gz macos
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: macos.tar.gz
+
+  publish:
+    name: Publish to itch.io
+    needs: [web, linux, windows, macos]
+    runs-on: ubuntu-latest
+    env:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Unpack builds
+        run: |
+          mkdir -p dist
+          for platform in web linux windows macos; do
+            tar -C dist -xzf "artifacts/$platform/$platform.tar.gz"
+          done
+          ls -R dist | head -50
+      - name: Install butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip -q butler.zip -d butler-bin
+          chmod +x butler-bin/butler
+          ./butler-bin/butler -V
+      - name: Push to itch.io
+        run: |
+          VERSION="${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}"
+          ./butler-bin/butler push dist/web     "$ITCH_TARGET:html"    --userversion "$VERSION"
+          ./butler-bin/butler push dist/linux   "$ITCH_TARGET:linux"   --userversion "$VERSION"
+          ./butler-bin/butler push dist/windows "$ITCH_TARGET:windows" --userversion "$VERSION"
+          ./butler-bin/butler push dist/macos   "$ITCH_TARGET:mac"     --userversion "$VERSION"

@@ -12,11 +12,20 @@ use main_menu::MainMenuPlugin;
 use systems::*;
 
 use bevy::prelude::*;
+use bevy::window::WindowPlugin;
 
 fn main() {
     App::new()
         // Bevy Plugins
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "Bevy Ball Game".to_string(),
+                // On the web, size the canvas to its container (the itch.io iframe).
+                fit_canvas_to_parent: true,
+                ..default()
+            }),
+            ..default()
+        }))
         .init_state::<AppState>()
         // My Plugins
         .add_plugins((MainMenuPlugin, GamePlugin))
