@@ -1,4 +1,6 @@
+use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
+use bevy::ui_widgets::Button;
 
 use crate::main_menu::components::*;
 use crate::main_menu::styles::*;
@@ -40,6 +42,7 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
             parent
                 .spawn((
                     Button,
+                    Hovered::default(),
                     BUTTON_NODE.clone(),
                     BackgroundColor(NORMAL_BUTTON_COLOR),
                     PlayButton {},
@@ -55,6 +58,7 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
             parent
                 .spawn((
                     Button,
+                    Hovered::default(),
                     BUTTON_NODE.clone(),
                     BackgroundColor(NORMAL_BUTTON_COLOR),
                     QuitButton {},

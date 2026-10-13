@@ -1,4 +1,6 @@
+use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
+use bevy::ui_widgets::Button;
 
 use crate::game::ui::game_over_menu::components::*;
 use crate::game::ui::game_over_menu::styles::*;
@@ -39,6 +41,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                     parent
                         .spawn((
                             Button,
+                            Hovered::default(),
                             BUTTON_NODE,
                             BackgroundColor(NORMAL_BUTTON),
                             RestartButton {},
@@ -54,6 +57,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                     parent
                         .spawn((
                             Button,
+                            Hovered::default(),
                             BUTTON_NODE,
                             BackgroundColor(NORMAL_BUTTON),
                             MainMenuButton {},
@@ -69,6 +73,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                     parent
                         .spawn((
                             Button,
+                            Hovered::default(),
                             BUTTON_NODE,
                             BackgroundColor(NORMAL_BUTTON),
                             QuitButton {},

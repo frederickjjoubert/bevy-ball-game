@@ -1,4 +1,6 @@
+use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
+use bevy::ui_widgets::Button;
 
 use crate::game::ui::pause_menu::components::{
     MainMenuButton, PauseMenu, QuitButton, ResumeButton,
@@ -45,6 +47,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                     parent
                         .spawn((
                             Button,
+                            Hovered::default(),
                             BUTTON_NODE.clone(),
                             BackgroundColor(NORMAL_BUTTON),
                             ResumeButton {},
@@ -60,6 +63,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                     parent
                         .spawn((
                             Button,
+                            Hovered::default(),
                             BUTTON_NODE.clone(),
                             BackgroundColor(NORMAL_BUTTON),
                             MainMenuButton {},
@@ -75,6 +79,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                     parent
                         .spawn((
                             Button,
+                            Hovered::default(),
                             BUTTON_NODE.clone(),
                             BackgroundColor(NORMAL_BUTTON),
                             QuitButton {},

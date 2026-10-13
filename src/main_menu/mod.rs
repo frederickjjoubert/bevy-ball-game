@@ -19,9 +19,11 @@ impl Plugin for MainMenuPlugin {
             // Systems
             .add_systems(
                 Update,
-                (interact_with_play_button, interact_with_quit_button)
-                    .run_if(in_state(AppState::MainMenu)),
+                update_button_colors.run_if(in_state(AppState::MainMenu)),
             )
+            // Button Observers
+            .add_observer(interact_with_play_button)
+            .add_observer(interact_with_quit_button)
             // OnExit State Systems
             .add_systems(OnExit(AppState::MainMenu), despawn_main_menu);
     }

@@ -1,78 +1,58 @@
 use bevy::app::AppExit;
+use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
+use bevy::ui::Pressed;
+use bevy::ui_widgets::{Activate, Button};
 
 use crate::game::ui::game_over_menu::components::*;
 use crate::game::ui::game_over_menu::styles::*;
 use crate::AppState;
 
 #[allow(clippy::type_complexity)]
+pub fn update_button_colors(
+    mut button_query: Query<
+        (&Hovered, Has<Pressed>, &mut BackgroundColor),
+        (
+            With<Button>,
+            Or<(With<RestartButton>, With<MainMenuButton>, With<QuitButton>)>,
+        ),
+    >,
+) {
+    for (hovered, pressed, mut color) in button_query.iter_mut() {
+        *color = match (hovered.get(), pressed) {
+            (_, true) => PRESSED_BUTTON.into(),
+            (true, false) => HOVERED_BUTTON.into(),
+            (false, false) => NORMAL_BUTTON.into(),
+        };
+    }
+}
+
 pub fn interact_with_restart_button(
-    mut button_query: Query<
-        (&Interaction, &mut BackgroundColor),
-        (Changed<Interaction>, With<RestartButton>),
-    >,
+    activate: On<Activate>,
+    restart_button_query: Query<(), With<RestartButton>>,
     mut app_state_next_state: ResMut<NextState<AppState>>,
 ) {
-    for (interaction, mut color) in button_query.iter_mut() {
-        match *interaction {
-            Interaction::Pressed => {
-                *color = PRESSED_BUTTON.into();
-                app_state_next_state.set(AppState::Game);
-            }
-            Interaction::Hovered => {
-                *color = HOVERED_BUTTON.into();
-            }
-            Interaction::None => {
-                *color = NORMAL_BUTTON.into();
-            }
-        }
+    if restart_button_query.contains(activate.entity) {
+        app_state_next_state.set(AppState::Game);
     }
 }
 
-#[allow(clippy::type_complexity)]
 pub fn interact_with_main_menu_button(
-    mut button_query: Query<
-        (&Interaction, &mut BackgroundColor),
-        (Changed<Interaction>, With<MainMenuButton>),
-    >,
+    activate: On<Activate>,
+    main_menu_button_query: Query<(), With<MainMenuButton>>,
     mut app_state_next_state: ResMut<NextState<AppState>>,
 ) {
-    for (interaction, mut color) in button_query.iter_mut() {
-        match *interaction {
-            Interaction::Pressed => {
-                *color = PRESSED_BUTTON.into();
-                app_state_next_state.set(AppState::MainMenu);
-            }
-            Interaction::Hovered => {
-                *color = HOVERED_BUTTON.into();
-            }
-            Interaction::None => {
-                *color = NORMAL_BUTTON.into();
-            }
-        }
+    if main_menu_button_query.contains(activate.entity) {
+        app_state_next_state.set(AppState::MainMenu);
     }
 }
 
-#[allow(clippy::type_complexity)]
 pub fn interact_with_quit_button(
+    activate: On<Activate>,
+    quit_button_query: Query<(), With<QuitButton>>,
     mut app_exit_message_writer: MessageWriter<AppExit>,
-    mut button_query: Query<
-        (&Interaction, &mut BackgroundColor),
-        (Changed<Interaction>, With<QuitButton>),
-    >,
 ) {
-    for (interaction, mut color) in button_query.iter_mut() {
-        match *interaction {
-            Interaction::Pressed => {
-                *color = PRESSED_BUTTON.into();
-                app_exit_message_writer.write(AppExit::Success);
-            }
-            Interaction::Hovered => {
-                *color = HOVERED_BUTTON.into();
-            }
-            Interaction::None => {
-                *color = NORMAL_BUTTON.into();
-            }
-        }
+    if quit_button_query.contains(activate.entity) {
+        app_exit_message_writer.write(AppExit::Success);
     }
 }
