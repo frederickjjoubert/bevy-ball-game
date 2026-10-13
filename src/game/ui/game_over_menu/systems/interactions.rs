@@ -4,9 +4,9 @@ use bevy::prelude::*;
 use bevy::ui::Pressed;
 use bevy::ui_widgets::{Activate, Button};
 
+use crate::AppState;
 use crate::game::ui::game_over_menu::components::*;
 use crate::game::ui::game_over_menu::styles::*;
-use crate::AppState;
 
 #[allow(clippy::type_complexity)]
 pub fn update_button_colors(

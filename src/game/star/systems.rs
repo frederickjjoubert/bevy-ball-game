@@ -2,9 +2,9 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use rand::random;
 
+use super::NUMBER_OF_STARS;
 use super::components::Star;
 use super::resources::*;
-use super::NUMBER_OF_STARS;
 
 pub fn spawn_stars(
     mut commands: Commands,

@@ -5,11 +5,11 @@ use bevy::window::PrimaryWindow;
 use super::components::Player;
 
 use crate::events::GameOver;
-use crate::game::enemy::components::*;
 use crate::game::enemy::ENEMY_SIZE;
+use crate::game::enemy::components::*;
 use crate::game::score::resources::*;
-use crate::game::star::components::Star;
 use crate::game::star::STAR_SIZE;
+use crate::game::star::components::Star;
 
 pub const PLAYER_SPEED: f32 = 500.0;
 pub const PLAYER_SIZE: f32 = 64.0; // This is the player sprite size.

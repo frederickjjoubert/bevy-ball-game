@@ -4,8 +4,8 @@ mod systems;
 
 use systems::layout::*;
 
-use crate::game::ui::hud::systems::updates::{update_enemy_text, update_score_text};
 use crate::AppState;
+use crate::game::ui::hud::systems::updates::{update_enemy_text, update_score_text};
 use bevy::prelude::*;
 
 pub struct HudPlugin;
