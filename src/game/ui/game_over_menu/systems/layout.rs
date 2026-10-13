@@ -10,7 +10,7 @@ pub fn spawn_game_over_menu(mut commands: Commands, asset_server: Res<AssetServe
 }
 
 pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
-    let game_over_menu_entity = commands
+    commands
         .spawn((
             Visibility::default(),
             GAME_OVER_MENU_NODE,
@@ -87,9 +87,7 @@ pub fn build_game_over_menu(commands: &mut Commands, asset_server: &Res<AssetSer
                         });
                 });
         })
-        .id();
-
-    game_over_menu_entity
+        .id()
 }
 
 pub fn despawn_game_over_menu(

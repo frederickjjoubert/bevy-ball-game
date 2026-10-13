@@ -16,7 +16,7 @@ pub fn despawn_main_menu(mut commands: Commands, main_menu_query: Query<Entity, 
 }
 
 pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
-    let main_menu_entity = commands
+    commands
         .spawn((Visibility::default(), MAIN_MENU_NODE.clone(), MainMenu {}))
         .with_children(|parent| {
             // === Title ===
@@ -71,7 +71,5 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                     ));
                 });
         })
-        .id();
-
-    main_menu_entity
+        .id()
 }

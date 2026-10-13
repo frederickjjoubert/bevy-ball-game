@@ -23,7 +23,7 @@ pub fn despawn_pause_menu(
 
 // System Piping Example
 pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
-    let pause_menu_entity = commands
+    commands
         .spawn((
             Visibility::default(),
             PAUSE_MENU_NODE.clone(),
@@ -93,9 +93,7 @@ pub fn build_pause_menu(commands: &mut Commands, asset_server: &Res<AssetServer>
                         });
                 });
         })
-        .id();
-
-    pause_menu_entity
+        .id()
 }
 
 // References

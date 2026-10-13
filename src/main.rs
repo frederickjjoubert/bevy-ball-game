@@ -20,8 +20,7 @@ fn main() {
         .init_state::<AppState>()
         // My Plugins
         .add_plugins((MainMenuPlugin, GamePlugin))
-        // Startup Systems or PostStartup Systems
-        //.add_systems(Startup, spawn_camera)
+        // Startup Systems
         .add_systems(PostStartup, spawn_camera)
         // Systems
         .add_systems(

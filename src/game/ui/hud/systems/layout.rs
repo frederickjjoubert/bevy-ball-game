@@ -8,7 +8,7 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 pub fn build_hud(commands: &mut Commands, asset_server: &Res<AssetServer>) -> Entity {
-    let hud_entity = commands
+    commands
         .spawn((Visibility::default(), HUD_NODE.clone(), HUD {}))
         .with_children(|parent| {
             // LHS
@@ -46,9 +46,7 @@ pub fn build_hud(commands: &mut Commands, asset_server: &Res<AssetServer>) -> En
                     ));
                 });
         })
-        .id();
-
-    hud_entity
+        .id()
 }
 
 pub fn despawn_hud(mut commands: Commands, hud_query: Query<Entity, With<HUD>>) {
